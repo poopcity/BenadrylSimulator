@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benadryl Simulator</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #000;
+            color: #0f0;
+            text-align: center;
+        }
+        #game {
+            white-space: pre;
+            font-size: 16px;
+            margin: 20px auto;
+            width: 80%;
+            border: 1px solid #0f0;
+            padding: 10px;
+            height: 400px;
+            overflow-y: auto;
+        }
+        #input {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Benadryl Simulator</h1>
+    <div id="game">
+        <!-- Game content will go here -->
+    </div>
+    <input id="input" type="text" placeholder="Press 1 to take Benadryl, 2 to check symptoms, 3 to exit" autofocus>
+    <script>
+        let doseCount = 0;
+        const gameDiv = document.getElementById('game');
+        const inputField = document.getElementById('input');
+
+        function updateGame(text) {
+            gameDiv.textContent += `\n${text}`;
+            gameDiv.scrollTop = gameDiv.scrollHeight; // Auto-scroll to the bottom
+        }
+
+        function hallucinationEffect(dose) {
+            const hallucinations = [
+                "Everything is melting like wax.",
+                "The furniture is whispering secrets to you.",
+                "A giant talking cat is debating philosophy with you.",
+                "The walls are breathing in sync with your heartbeat.",
+                "Your shadow is plotting against you.",
+                "The floor is covered in shifting patterns of color and light.",
+                "You can hear colors speaking in riddles.",
+                "The clock is spinning in reverse, and time is unraveling.",
+                "The room is shrinking and expanding like a heartbeat.",
+                "Objects around you are turning into liquid and flowing away."
+                // Add more hallucinations here
+            ];
+            return hallucinations[dose % hallucinations.length];
+        }
+
+        function friendText() {
+            const texts = [
+                "Are you sure you’re okay? This doesn’t sound like you.",
+                "I just saw a dragon fly past your window!",
+                "Why did you just send me a picture of your ceiling? It’s moving.",
+                "I’m starting to worry. You’re sending me some really strange messages.",
+                "Your cat just started typing on your computer.",
+                "Did you just say you can see the sound of music?",
+                "I think you’re sending me Morse code now. What’s going on?",
+                "Why are you talking to the toaster? It’s not alive.",
+                "I’m getting texts about a UFO landing in your backyard. What?",
+                "I saw a unicorn in your driveway. Should I be concerned?"
+                // Add more friend texts here
+            ];
+            return texts[Math.floor(Math.random() * texts.length)];
+        }
+
+        function checkSymptoms(dose) {
+            const symptoms = [
+                "You’re feeling slightly dizzy and disoriented.",
+                "Your vision is distorting, everything is wavy.",
+                "You feel like you’re in a surreal painting.",
+                "Your sense of reality is becoming increasingly fragmented.",
+                "Time seems to be stretching and contracting erratically.",
+                "You’re starting to hear voices that don’t make sense.",
+                "Your environment feels like a dream that you can’t wake up from.",
+                "You’re having trouble distinguishing dreams from reality.",
+                "The world outside your window is morphing into strange shapes.",
+                "You feel like you’re being watched by invisible entities."
+                // Add more symptoms here
+            ];
+            return symptoms[dose % symptoms.length];
+        }
+
+        function processInput(input) {
+            switch(input) {
+                case '1': // Take Benadryl
+                    doseCount++;
+                    updateGame(`You took Benadryl. ${hallucinationEffect(doseCount)}`);
+                    if (doseCount % 3 === 0) {
+                        updateGame(`Text from friend: ${friendText()}`);
+                    }
+                    break;
+                case '2': // Check symptoms
+                    updateGame(`Checking symptoms... ${checkSymptoms(doseCount)}`);
+                    break;
+                case '3': // Exit
+                    updateGame(`Exiting the game...`);
+                    inputField.disabled = true;
+                    break;
+                default:
+                    updateGame(`Invalid choice, please try again.`);
+            }
+        }
+
+        inputField.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                processInput(inputField.value.trim());
+                inputField.value = ''; // Clear the input field
+            }
+        });
+
+        updateGame("Welcome to Benadryl Simulator!\nPress 1 to take Benadryl, 2 to check symptoms, 3 to exit.");
+    </script>
+</body>
+</html>
